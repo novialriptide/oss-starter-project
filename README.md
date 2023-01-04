@@ -1,10 +1,11 @@
-# OSS
+# Rutgers Open System Solutions Training Project
+
 ## Instructions
 Create a backend with Flask (Python) and frontend (ReactJS) that displays students which you can add or remove and implement a REST API for removing and adding students.
 
 ## Hours
-01/03/2023: 1:50 PM - ?
-
+ - 01/03/2023: 1:50 PM - 2:30 PM (40 minutes)
+ - 01/04/2023: 2:57 PM - 4:28 PM (151 minutes)
 
 # Getting Started with Create React App
 
