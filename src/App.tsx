@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const ipAddress = "http://127.0.0.1:5000"
+
+class App extends React.Component {
+  state = {
+    students: [],
+  }
+
+  public async getUsers(): Promise<any> {
+    const response = await fetch(ipAddress)
+
+    if (!response.ok) {
+      return;
+    }
+
+    return await response.json();
+  }
+  
+  public componentDidMount(): void {
+    this.getUsers().then(
+      (value) => {
+        console.log(value)
+      }
+    )
+  }
+
+  public render() {
+    return (
+      <div className="App">
+        <h1>Students</h1>
+          {this.state.students.map((data, key) => {
+              return (
+                <p>{data}</p>
+              );
+          })}
+      </div>
+    );
+  }
 }
 
 export default App;

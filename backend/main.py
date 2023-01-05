@@ -1,7 +1,9 @@
 from models.student import Student
 import flask
+import flask_cors
 
 api = flask.Flask(__name__)
+flask_cors.CORS(api)
 database = {"students": {}}
 
 
@@ -17,6 +19,13 @@ def get_student_by_name(name: str):
 
     return vars(database["students"][name])
 
+@api.route("/get-students")
+def get_students():
+    out = {"students": []}
+    for x in database["students"]:
+        out["students"].append(vars(database["students"][x]))
+
+    return out
 
 @api.route("/add-student")
 def add_student():
@@ -25,7 +34,6 @@ def add_student():
     major = flask.request.args.get("major", type=str)
 
     s = Student(name, grade, major)
-    print(major)
     database["students"][name] = s
 
     return {"message": "success"}
