@@ -1,11 +1,14 @@
 from models.student import Student
+import json
 import flask
+import pymongo
 import flask_cors
 
 api = flask.Flask(__name__)
-flask_cors.CORS(api)
-database = {"students": {}}
+mongo_client = pymongo.MongoClient("localhost", 27017)
 
+flask_cors.CORS(api)
+students_collection = mongo_client.oss.get_collection("students")
 
 @api.route("/")
 def default():
@@ -14,16 +17,21 @@ def default():
 
 @api.route("/get-student-by-name/<string:name>")
 def get_student_by_name(name: str):
-    if name not in database["students"]:
-        return {"message": "error, student doesnt exist"}
+    out = students_collection.find_one({"name": name})
 
-    return vars(database["students"][name])
+    if out is None:
+        return {"message": "doesnt exist"}
+    
+    del out["_id"]
+
+    return out
 
 @api.route("/get-students")
 def get_students():
     out = {"students": []}
-    for x in database["students"]:
-        out["students"].append(vars(database["students"][x]))
+    for x in students_collection.find({}):
+        del x["_id"]
+        out["students"].append(x)
 
     return out
 
@@ -33,18 +41,21 @@ def add_student():
     grade = flask.request.args.get("grade", type=int)
     major = flask.request.args.get("major", type=str)
 
+    if students_collection.find_one({"name": name}) is not None:
+        return {"message": "already exists"}
+
     s = Student(name, grade, major)
-    database["students"][name] = s
+    students_collection.insert_one(vars(s))
 
     return {"message": "success"}
 
 
 @api.route("/remove-student-by-name/<string:name>")
 def remove_student(name: str):
-    if name not in database["students"]:
+    if students_collection.find_one({"name": name}) is None:
         return {"message": "error, student doesnt exist"}
 
-    del database["students"][name]
+    students_collection.delete_one({"name": name})
 
     return {"message": "success"}
 

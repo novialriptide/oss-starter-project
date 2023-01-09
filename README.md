@@ -4,10 +4,7 @@
 Create a backend with Flask (Python) and frontend (ReactJS) that displays students which you can add or remove and implement a REST API for removing and adding students.
 
 ## Hours
- - 01/03/2023: 01:50 PM - 02:30 PM (40 minutes)
- - 01/04/2023: 02:57 PM - 04:28 PM (151 minutes)
- - 01/04/2023: 08:15 PM - 09:29 PM (74 minutes)
- - 01/04/2023: 09:51 PM - 10:24 PM (33 minutes)
+ - 01/08/2023 - 1:00 AM - 3:13 AM
 
 # Getting Started with Create React App
 
